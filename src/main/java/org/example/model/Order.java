@@ -1,0 +1,48 @@
+package org.example.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import org.example.DTO.OrderDTO;
+import org.example.service.CustomerService;
+import org.example.service.OrderItemService;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Date;
+import java.util.List;
+
+@Data
+@Entity
+@Table(name = "'ORDER'")
+@AllArgsConstructor
+@NoArgsConstructor
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "order_id")
+    private Long orderId;
+//    @JdbcTypeCode(SqlTypes.JSON)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+    @Column(name = "order_date")
+    private Date orderDate;
+    @Column(name = "total_amount")
+    private double totalAmount;
+//    @JdbcTypeCode(SqlTypes.JSON)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
+    public Order(@NonNull OrderDTO orderDTO, @NonNull Customer customer, @NonNull List<OrderItem> orderItems){
+        this.orderId = orderDTO.getOrderId();
+        this.customer = customer;
+        this.orderDate = orderDTO.getOrderDate();
+        this.totalAmount = orderDTO.getTotalAmount();
+        this.orderItems = orderItems;
+
+    }
+}
