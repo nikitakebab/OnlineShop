@@ -1,18 +1,11 @@
 package org.example.controller;
 
 import org.example.DTO.InventoryDTO;
-import org.example.DTO.ProductDTO;
-import org.example.model.Inventory;
-import org.example.model.Order;
 import org.example.service.InventoryService;
-import org.example.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,6 +15,7 @@ public class InventoryController {
     InventoryService inventoryService;
 
     @GetMapping("/inventories")
+//    @CrossOrigin
     ResponseEntity<List<InventoryDTO>> getInventories() {
         List<InventoryDTO> inventories = inventoryService.getInventory();
 

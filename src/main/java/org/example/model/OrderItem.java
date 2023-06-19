@@ -6,11 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.example.DTO.OrderItemDTO;
-import org.example.service.OrderService;
-import org.example.service.ProductService;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
-import org.springframework.beans.factory.annotation.Autowired;
 
 @Data
 @Entity
@@ -26,13 +21,11 @@ public class OrderItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
-//    private long order_id; //foreign key referencing Order table
 
 //    @JdbcTypeCode(SqlTypes.JSON)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_id")
     private Product product;
-//    private long product_id; //foreign key referencing Product table
 
     @Column(name = "quantity")
     private int quantity;

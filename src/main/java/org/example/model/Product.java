@@ -6,8 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.example.DTO.ProductDTO;
-import org.hibernate.annotations.JdbcType;
-import org.hibernate.type.SqlTypes;
 
 @Data
 @Entity

@@ -1,15 +1,11 @@
 package org.example.controller;
 
 import org.example.DTO.OrderItemDTO;
-import org.example.DTO.ProductDTO;
 import org.example.service.OrderItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +15,7 @@ public class OrderItemsController {
     OrderItemService orderItemService;
 
     @GetMapping("/orderItems")
+//    @CrossOrigin
     ResponseEntity<List<OrderItemDTO>> getOrderItems() {
         List<OrderItemDTO> orderItemDTOList = orderItemService.getOrderItems();
 
