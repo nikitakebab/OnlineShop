@@ -28,10 +28,10 @@ public class OrderItem {
     private Product product;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
     public OrderItem(@NonNull OrderItemDTO orderItemDTO, @NonNull Order order, @NonNull Product product){
         this.orderItemId = orderItemDTO.getOrderItemId();
