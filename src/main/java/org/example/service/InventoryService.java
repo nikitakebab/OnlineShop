@@ -7,6 +7,7 @@ import org.example.model.Product;
 import org.example.repository.InventoryRepository;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,8 +21,11 @@ public class InventoryService {
     @Autowired
     ProductRepository productRepository;
 
-    public List<InventoryDTO> getInventory() {
-        return inventoryRepository.findAll().stream().map(InventoryDTO::new).toList();
+    public List<InventoryDTO> getInventory(Long inventoryId, Long productId) {
+        return inventoryRepository.findAll(Example.of(new Inventory(
+                inventoryId,
+                productRepository.findById(productId).get()
+        ))).stream().map(InventoryDTO::new).toList();
     }
 
     public void addInventory(InventoryDTO inventoryDTO) {

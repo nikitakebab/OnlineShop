@@ -36,4 +36,18 @@ public class Product {
         this.brand = productDTO.getBrand();
         this.category = productDTO.getCategory();
     }
+
+    public Product(
+            Long productId,
+            String productName,
+            String description,
+            String brand,
+            String category
+    ) {
+        this.productId = productId;
+        this.productName = productName;
+        this.description = description;
+        this.brand = brand;
+        this.category = category;
+    }
 }

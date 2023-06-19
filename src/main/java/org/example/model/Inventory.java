@@ -29,4 +29,9 @@ public class Inventory {
         this.product = product;
         this.quantity = inventoryDTO.getQuantity();
     }
+
+    public Inventory(Long inventoryId, Product product) {
+        this.inventoryId = inventoryId;
+        this.product = product;
+    }
 }

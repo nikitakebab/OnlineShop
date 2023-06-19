@@ -16,8 +16,10 @@ public class CustomerController {
 
     @GetMapping("/customers")
     @CrossOrigin
-    ResponseEntity<List<CustomerDTO>> getCustomers() {
-        List<CustomerDTO> customers = customerService.getCustomers();
+    ResponseEntity<List<CustomerDTO>> getCustomers(@RequestParam(value = "customer_id", required = false) Long customerId,
+                                                   @RequestParam(value = "email", required = false) String email,
+                                                   @RequestParam(value = "phone", required = false) String phone) {
+        List<CustomerDTO> customers = customerService.getCustomers(customerId, email, phone);
 
         return new ResponseEntity<List<CustomerDTO>>(customers, HttpStatus.OK);
 

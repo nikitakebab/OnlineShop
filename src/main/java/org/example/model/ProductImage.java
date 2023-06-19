@@ -28,4 +28,9 @@ public class ProductImage {
         this.product = product;
         this.picture = productImageDTO.getPicture();
     }
+
+    public ProductImage(Long productImageId, Product product) {
+        this.productImageId = productImageId;
+        this.product = product;
+    }
 }

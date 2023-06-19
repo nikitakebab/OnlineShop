@@ -40,4 +40,9 @@ public class Order {
         this.orderItems = orderItems;
 
     }
+
+    public Order(Long orderId, Customer customer) {
+        this.orderId = orderId;
+        this.customer = customer;
+    }
 }

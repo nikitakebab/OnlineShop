@@ -16,8 +16,10 @@ public class OrderController {
 
     @GetMapping("/orders")
 //    @CrossOrigin
-    ResponseEntity<List<OrderDTO>> getOrders() {
-        List<OrderDTO> orders = orderService.getOrders();
+    ResponseEntity<List<OrderDTO>> getOrders(@RequestParam(value = "order_id", required = false) Long orderId,
+                                             @RequestParam(value = "customer_id", required = false) Long customerId
+    ) {
+        List<OrderDTO> orders = orderService.getOrders(orderId, customerId);
 
         return new ResponseEntity<List<OrderDTO>>(orders, HttpStatus.OK);
 

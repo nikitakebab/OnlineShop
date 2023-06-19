@@ -16,8 +16,11 @@ public class OrderItemsController {
 
     @GetMapping("/orderItems")
 //    @CrossOrigin
-    ResponseEntity<List<OrderItemDTO>> getOrderItems() {
-        List<OrderItemDTO> orderItemDTOList = orderItemService.getOrderItems();
+    ResponseEntity<List<OrderItemDTO>> getOrderItems(@RequestParam(value = "order_item_id", required = false) Long orderItemId,
+                                                     @RequestParam(value = "order_id", required = false) Long orderId,
+                                                     @RequestParam(value = "product_id", required = false) Long productId
+    ) {
+        List<OrderItemDTO> orderItemDTOList = orderItemService.getOrderItems(orderItemId, orderId, productId);
 
         return new ResponseEntity<List<OrderItemDTO>>(orderItemDTOList, HttpStatus.OK);
 

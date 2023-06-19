@@ -17,8 +17,20 @@ public class ProductController {
 
     @GetMapping("/products")
 //    @CrossOrigin
-    ResponseEntity<List<ProductDTO>> getProducts() {
-        List<ProductDTO> products = productService.getProducts();
+    ResponseEntity<List<ProductDTO>> getProducts(
+            @RequestParam(value = "product_id", required = false) Long productId,
+            @RequestParam(value = "product_name", required = false) String productName,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "brand", required = false) String brand,
+            @RequestParam(value = "category", required = false) String category
+    ) {
+        List<ProductDTO> products = productService.getProducts(
+                productId,
+                productName,
+                description,
+                brand,
+                category
+        );
 
         return new ResponseEntity<List<ProductDTO>>(products, HttpStatus.OK);
 

@@ -16,8 +16,9 @@ public class InventoryController {
 
     @GetMapping("/inventories")
 //    @CrossOrigin
-    ResponseEntity<List<InventoryDTO>> getInventories() {
-        List<InventoryDTO> inventories = inventoryService.getInventory();
+    ResponseEntity<List<InventoryDTO>> getInventories(@RequestParam(value = "inventory_id", required = false) Long inventoryId,
+                                                      @RequestParam(value = "product_id", required = false) Long productId) {
+        List<InventoryDTO> inventories = inventoryService.getInventory(inventoryId, productId);
 
         return new ResponseEntity<List<InventoryDTO>>(inventories, HttpStatus.OK);
 

@@ -7,6 +7,7 @@ import org.example.model.ProductImage;
 import org.example.repository.ProductImageRepository;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,8 +20,11 @@ public class ProductImageService {
     @Autowired
     ProductRepository productRepository;
 
-    public List<ProductImageDTO> getProductImages() {
-        return productImageRepository.findAll().stream().map(ProductImageDTO::new).toList();
+    public List<ProductImageDTO> getProductImages(Long productImageId, Long productId) {
+        return productImageRepository.findAll(Example.of(new ProductImage(
+                productImageId,
+                productRepository.findById(productId).get()
+        ))).stream().map(ProductImageDTO::new).toList();
     }
 
     public void addProductImage(ProductImageDTO productImageDTO) {

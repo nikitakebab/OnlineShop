@@ -36,4 +36,10 @@ public class Customer {
         this.phone = customerDTO.getPhone();
         this.address = customerDTO.getAddress();
     }
+
+    public Customer(Long customerId, String email, String phone) {
+        this.customerId = customerId;
+        this.email = email;
+        this.phone = phone;
+    }
 }

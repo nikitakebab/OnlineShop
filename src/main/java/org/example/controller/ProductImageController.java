@@ -1,8 +1,6 @@
 package org.example.controller;
 
-import org.example.DTO.ProductDTO;
 import org.example.DTO.ProductImageDTO;
-import org.example.repository.ProductImageRepository;
 import org.example.service.ProductImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,8 +16,11 @@ public class ProductImageController {
 
     @GetMapping("/productImages")
 //    @CrossOrigin
-    ResponseEntity<List<ProductImageDTO>> getProductImages() {
-        List<ProductImageDTO> productImageDTOList = productImageService.getProductImages();
+    ResponseEntity<List<ProductImageDTO>> getProductImages(
+            @RequestParam(value = "image_id", required = false) Long productImageId,
+            @RequestParam(value = "product_id", required = false) Long productId
+    ) {
+        List<ProductImageDTO> productImageDTOList = productImageService.getProductImages(productImageId, productId);
 
         return new ResponseEntity<List<ProductImageDTO>>(productImageDTOList, HttpStatus.OK);
 

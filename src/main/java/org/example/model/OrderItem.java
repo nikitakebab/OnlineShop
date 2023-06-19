@@ -40,4 +40,10 @@ public class OrderItem {
         this.quantity = orderItemDTO.getQuantity();
         this.price = orderItemDTO.getPrice();
     }
+
+    public OrderItem(Long orderItemId, Order order, Product product) {
+        this.orderItemId = orderItemId;
+        this.order = order;
+        this.product = product;
+    }
 }
