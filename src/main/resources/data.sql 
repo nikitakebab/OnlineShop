@@ -1,3 +1,0 @@
-INSERT INTO Product (ID, Title, Description, Price) VALUES ('Penis', 'penis', 50);
-INSERT INTO Product (ID, Title, Description, Price) VALUES ('Big Penis', 'big penis', 100);
-INSERT INTO Product (ID, Title, Description, Price) VALUES ('Small Penis', 'small penis', 20);
