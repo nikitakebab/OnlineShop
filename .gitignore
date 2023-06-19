@@ -11,7 +11,8 @@ target/
 *.iws
 *.iml
 *.ipr
-
+sshkey.pub
+sshkey
 ### Maven ###
 pom.xml.tag
 pom.xml.releaseBackup
