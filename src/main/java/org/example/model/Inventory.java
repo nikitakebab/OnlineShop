@@ -18,16 +18,19 @@ public class Inventory {
     @Column(name = "inventory_id")
     private Long inventoryId;
 //    @JdbcTypeCode(SqlTypes.JSON)
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
+    @Column(name = "size")
+    private Integer size;
 
     public Inventory(@NonNull InventoryDTO inventoryDTO, @NonNull Product product){
         this.inventoryId = inventoryDTO.getInventoryId();
         this.product = product;
         this.quantity = inventoryDTO.getQuantity();
+        this.size = inventoryDTO.getSize();
     }
 
     public Inventory(Long inventoryId, Product product) {

@@ -16,14 +16,14 @@ public class OrderDTO {
     private Long orderId;
     private Long customerId;
     private Date orderDate;
-    private double totalAmount;
-    private List<Long> orderItemsId;
+    private Double totalAmount;
+//    private List<Long> orderItemsId;
 
     public OrderDTO(@NonNull Order order){
         this.orderId = order.getOrderId();
         this.customerId = order.getOrderId();
         this.orderDate = order.getOrderDate();
         this.totalAmount = order.getTotalAmount();
-        this.orderItemsId = order.getOrderItems().stream().map(OrderItem::getOrderItemId).toList();
+//        this.orderItemsId = order.getOrderItems().stream().map(OrderItem::getOrderItemId).toList();
     }
 }

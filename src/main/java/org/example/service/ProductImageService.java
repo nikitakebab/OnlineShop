@@ -1,8 +1,6 @@
 package org.example.service;
 
-import org.example.DTO.ProductDTO;
 import org.example.DTO.ProductImageDTO;
-import org.example.model.Product;
 import org.example.model.ProductImage;
 import org.example.repository.ProductImageRepository;
 import org.example.repository.ProductRepository;

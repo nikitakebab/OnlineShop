@@ -27,9 +27,9 @@ public class Order {
     @Column(name = "order_date")
     private Date orderDate;
     @Column(name = "total_amount")
-    private double totalAmount;
+    private Double totalAmount;
 //    @JdbcTypeCode(SqlTypes.JSON)
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
     public Order(@NonNull OrderDTO orderDTO, @NonNull Customer customer, @NonNull List<OrderItem> orderItems){
@@ -37,7 +37,7 @@ public class Order {
         this.customer = customer;
         this.orderDate = orderDTO.getOrderDate();
         this.totalAmount = orderDTO.getTotalAmount();
-        this.orderItems = orderItems;
+//        this.orderItems = orderItems;
 
     }
 

@@ -47,4 +47,16 @@ public class ProductService {
 //        return productRepository.findAll().stream().filter(product -> product.getProductId().equals(orderItemDTO.getProductId())).toList().get(0);
         return productRepository.getById(orderItemDTO.getProductId());
     }
+
+    public void deleteProducts(Long productId, String productName, String description, String brand, String category) {
+//        productRepository.delete(Example.of(new Product(productId, productName, description, brand, category)).getProbe());
+        List<ProductDTO> productDTOList = getProducts(
+                productId,
+                productName,
+                description,
+                brand,
+                category
+        );
+        productRepository.deleteAllById(productDTOList.stream().map(ProductDTO::getProductId).toList());
+    }
 }

@@ -10,12 +10,14 @@ import org.example.model.Inventory;
 public class InventoryDTO {
     private Long inventoryId;
     private Long productId;
-    private int quantity;
+    private Integer quantity;
+    private Integer size;
 
     public InventoryDTO(@NonNull Inventory inventory) {
         this.inventoryId = inventory.getInventoryId();
         this.productId = inventory.getProduct().getProductId();
         this.quantity = inventory.getQuantity();
+        this.size = inventory.getSize();
     }
 }
 

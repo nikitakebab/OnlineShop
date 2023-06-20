@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.example.DTO.CustomerDTO;
 
+import java.util.List;
+
 @Data
 @Entity
 @Table
@@ -27,6 +29,8 @@ public class Customer {
     private String phone;
     @Column(name = "address")
     private String address;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
 
     public Customer(@NonNull CustomerDTO customerDTO){
         this.customerId = customerDTO.getCustomerId();

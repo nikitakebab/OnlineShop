@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.example.DTO.ProductDTO;
 
+import java.util.Date;
+import java.util.List;
+
 @Data
 @Entity
 @Table
@@ -19,7 +22,7 @@ public class Product {
     private Long productId;
     @Column(name = "product_name")
     private String productName;
-    @Column(name = "description")
+    @Column(name = "description", columnDefinition = "NVARCHAR(1000)")
     private String description;
     @Column(name = "price")
     private Double price;
@@ -27,6 +30,14 @@ public class Product {
     private String brand;
     @Column(name = "category")
     private String category;
+    @Column(name = "create_date")
+    private Date createDate;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Inventory> inventories;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> orderItems;
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductImage> productImages;
 
     public Product(@NonNull ProductDTO productDTO) {
         this.productId = productDTO.getProductId();
@@ -35,6 +46,7 @@ public class Product {
         this.price = productDTO.getPrice();
         this.brand = productDTO.getBrand();
         this.category = productDTO.getCategory();
+        this.createDate = productDTO.getCreateDate();
     }
 
     public Product(

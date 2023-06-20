@@ -11,8 +11,8 @@ public class OrderItemDTO {
     private Long orderItemId;
     private Long orderId;
     private Long productId;
-    private int quantity;
-    private double price;
+    private Integer quantity;
+    private Double price;
 
     public OrderItemDTO(@NonNull OrderItem orderItem){
         this.orderItemId = orderItem.getOrderItemId();

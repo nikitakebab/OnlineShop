@@ -23,7 +23,7 @@ public class OrderItem {
     private Order order;
 
 //    @JdbcTypeCode(SqlTypes.JSON)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "product_id")
     private Product product;
 
