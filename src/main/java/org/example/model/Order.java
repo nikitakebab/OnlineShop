@@ -32,7 +32,7 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> orderItems;
 
-    public Order(@NonNull OrderDTO orderDTO, @NonNull Customer customer, @NonNull List<OrderItem> orderItems){
+    public Order(@NonNull OrderDTO orderDTO, @NonNull Customer customer){
         this.orderId = orderDTO.getOrderId();
         this.customer = customer;
         this.orderDate = orderDTO.getOrderDate();

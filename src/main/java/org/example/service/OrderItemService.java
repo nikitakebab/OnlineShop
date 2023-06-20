@@ -48,16 +48,16 @@ public class OrderItemService {
         )).toList());
     }
 
-    public List<OrderItem> findOrderItems(OrderDTO orderDTO) {
-        List<Long> orderItemIdList = orderDTO.getOrderItemsId();
-        List<OrderItem> orderItemList = orderItemsRepository.findAll();
-        List<Long> orderItemAllIdList = orderItemList.stream().map(OrderItem::getOrderItemId).toList();
-        List<OrderItem> filteredOrderItems = new ArrayList<>();
-        for (OrderItem orderItem : orderItemList) {
-            if(orderItemIdList.contains(orderItem.getOrderItemId())) {
-                filteredOrderItems.add(orderItem);
-            }
-        }
-        return filteredOrderItems;
-    }
+//    public List<OrderItem> findOrderItems(OrderDTO orderDTO) {
+//        List<Long> orderItemIdList = orderDTO.getOrderItemsId();
+//        List<OrderItem> orderItemList = orderItemsRepository.findAll();
+//        List<Long> orderItemAllIdList = orderItemList.stream().map(OrderItem::getOrderItemId).toList();
+//        List<OrderItem> filteredOrderItems = new ArrayList<>();
+//        for (OrderItem orderItem : orderItemList) {
+//            if(orderItemIdList.contains(orderItem.getOrderItemId())) {
+//                filteredOrderItems.add(orderItem);
+//            }
+//        }
+//        return filteredOrderItems;
+//    }
 }

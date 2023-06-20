@@ -31,16 +31,16 @@ public class OrderService {
     public void addOrder(OrderDTO orderDTO) {
         orderRepository.save(new Order(
                 orderDTO,
-                customerRepository.findById(orderDTO.getCustomerId()).get(),
-                orderItemsRepository.findAllById(orderDTO.getOrderItemsId())
+                customerRepository.findById(orderDTO.getCustomerId()).get()
+//                orderItemsRepository.findAllById(orderDTO.getOrderItemsId())
         ));
     }
 
     public void saveAll(List<OrderDTO> orderDTOList) {
         orderRepository.saveAll(orderDTOList.stream().map(orderDTO -> new Order(
                 orderDTO,
-                customerRepository.findById(orderDTO.getCustomerId()).get(),
-                orderItemsRepository.findAllById(orderDTO.getOrderItemsId())
+                customerRepository.findById(orderDTO.getCustomerId()).get()
+//                orderItemsRepository.findAllById(orderDTO.getOrderItemsId())
         )).toList());
     }
 }
