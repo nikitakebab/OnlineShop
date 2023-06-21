@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import org.example.DTO.ProductDTO;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,9 @@ public class Product {
     @Column(name = "category")
     private String category;
     @Column(name = "create_date")
+    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date createDate;
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Inventory> inventories;

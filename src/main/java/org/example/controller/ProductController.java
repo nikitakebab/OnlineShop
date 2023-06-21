@@ -21,14 +21,18 @@ public class ProductController {
             @RequestParam(value = "product_name", required = false) String productName,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "brand", required = false) String brand,
-            @RequestParam(value = "category", required = false) String category
+            @RequestParam(value = "category", required = false) String category,
+            @RequestParam(value = "sortBy", required = false) String sortType,
+            @RequestParam(value = "sortOrder", required = false) String sortOrder
     ) {
         List<ProductDTO> products = productService.getProducts(
                 productId,
                 productName,
                 description,
                 brand,
-                category
+                category,
+                sortType,
+                sortOrder
         );
 
         return new ResponseEntity<List<ProductDTO>>(products, HttpStatus.OK);

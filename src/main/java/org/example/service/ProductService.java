@@ -7,6 +7,7 @@ import org.example.model.Product;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
@@ -19,15 +20,26 @@ public class ProductService {
             String productName,
             String description,
             String brand,
-            String category
+            String category,
+            String sortType,
+            String sortOrder
     ) {
-        return productRepository.findAll(Example.of(new Product(
+        if (sortType != null) return productRepository.findAll(Example.of(new Product(
                 productId,
                 productName,
                 description,
                 brand,
                 category
-        ))).stream().map(ProductDTO::new).toList();
+        )), Sort.by(Sort.Direction.fromString(sortOrder), sortType)).stream().map(ProductDTO::new).toList();
+        else {
+            return productRepository.findAll(Example.of(new Product(
+                    productId,
+                    productName,
+                    description,
+                    brand,
+                    category
+            ))).stream().map(ProductDTO::new).toList();
+        }
     }
 
     public void addProduct(ProductDTO productDTO) {
@@ -50,13 +62,13 @@ public class ProductService {
 
     public void deleteProducts(Long productId, String productName, String description, String brand, String category) {
 //        productRepository.delete(Example.of(new Product(productId, productName, description, brand, category)).getProbe());
-        List<ProductDTO> productDTOList = getProducts(
+        List<ProductDTO> productDTOList = productRepository.findAll(Example.of(new Product(
                 productId,
                 productName,
                 description,
                 brand,
                 category
-        );
+        ))).stream().map(ProductDTO::new).toList();
         productRepository.deleteAllById(productDTOList.stream().map(ProductDTO::getProductId).toList());
     }
 }
