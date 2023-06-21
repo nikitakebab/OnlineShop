@@ -62,6 +62,10 @@ public class ProductService {
         return new PageImpl<>(productDTOList, pageable, allProducts.size());
     }
 
+    public ProductDTO getProduct(Long id) {
+        return new ProductDTO(productRepository.getById(id));
+    }
+
     public List<String> getBrands() {
 //        List<Long> availableProductIds = inventoryRepository.findAll().stream()
 //                .filter(inventory -> inventory.getQuantity() > 0)

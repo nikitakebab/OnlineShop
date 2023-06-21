@@ -50,6 +50,12 @@ public class ProductController {
         return  new ResponseEntity<>(brands, HttpStatus.OK);
     }
 
+    @GetMapping("/products/{id}")
+    @ResponseBody
+    ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
+    }
+
     @PostMapping("/product")
     void addProduct(@RequestBody ProductDTO productDTO){
         productService.addProduct(productDTO);
