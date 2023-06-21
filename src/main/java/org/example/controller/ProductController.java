@@ -3,6 +3,7 @@ package org.example.controller;
 import org.example.DTO.ProductDTO;
 import org.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class ProductController {
 
     @GetMapping("/products")
 //    @CrossOrigin
-    ResponseEntity<List<ProductDTO>> getProducts(
+    ResponseEntity<Page<ProductDTO>> getProducts(
             @RequestParam(value = "product_id", required = false) Long productId,
             @RequestParam(value = "product_name", required = false) String productName,
             @RequestParam(value = "description", required = false) String description,
@@ -27,7 +28,7 @@ public class ProductController {
             @RequestParam(value = "page", required = true) int pageNum,
             @RequestParam(value = "page_size", required = true) int pageSize
     ) {
-        List<ProductDTO> products = productService.getProducts(
+        Page<ProductDTO> products = productService.getProducts(
                 productId,
                 productName,
                 description,
@@ -39,8 +40,14 @@ public class ProductController {
                 pageSize
         );
 
-        return new ResponseEntity<List<ProductDTO>>(products, HttpStatus.OK);
+        return new ResponseEntity<Page<ProductDTO>>(products, HttpStatus.OK);
 
+    }
+
+    @GetMapping("/products/brands")
+    ResponseEntity<List<String>> getBrands() {
+        List<String> brands = productService.getBrands();
+        return  new ResponseEntity<>(brands, HttpStatus.OK);
     }
 
     @PostMapping("/product")

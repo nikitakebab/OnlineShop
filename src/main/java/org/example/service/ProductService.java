@@ -3,13 +3,13 @@ package org.example.service;
 import org.example.DTO.InventoryDTO;
 import org.example.DTO.OrderItemDTO;
 import org.example.DTO.ProductDTO;
+import org.example.model.Inventory;
 import org.example.model.Product;
+import org.example.repository.InventoryRepository;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
@@ -17,7 +17,7 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
-    public List<ProductDTO> getProducts(
+    public Page<ProductDTO> getProducts(
             Long productId,
             String productName,
             String description,
@@ -28,22 +28,51 @@ public class ProductService {
             int pageNum,
             int pageSize
     ) {
-        if (sortType != null) return productRepository.findAll(Example.of(new Product(
-                productId,
-                productName,
-                description,
-                brand,
-                category
-        )), PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.fromString(sortOrder), sortType))).stream().map(ProductDTO::new).toList();
-        else {
-            return productRepository.findAll(Example.of(new Product(
+
+        List<ProductDTO> productDTOList;
+        Pageable pageable;
+        List<ProductDTO> allProducts;
+        if (sortType != null) {
+            pageable = PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.fromString(sortOrder), sortType));
+            allProducts = productRepository.findAll(Example.of(new Product(
                     productId,
                     productName,
                     description,
                     brand,
                     category
-            )), PageRequest.of(pageNum, pageSize)).stream().map(ProductDTO::new).toList();
+            )), Sort.by(Sort.Direction.fromString(sortOrder), sortType)).stream().map(ProductDTO::new).toList();
         }
+        else {
+            pageable = PageRequest.of(pageNum, pageSize);
+            allProducts = productRepository.findAll(Example.of(new Product(
+                    productId,
+                    productName,
+                    description,
+                    brand,
+                    category
+            ))).stream().map(ProductDTO::new).toList();
+        }
+        productDTOList = productRepository.findAll(Example.of(new Product(
+                productId,
+                productName,
+                description,
+                brand,
+                category
+        )), pageable).stream().map(ProductDTO::new).toList();
+        return new PageImpl<>(productDTOList, pageable, allProducts.size());
+    }
+
+    public List<String> getBrands() {
+//        List<Long> availableProductIds = inventoryRepository.findAll().stream()
+//                .filter(inventory -> inventory.getQuantity() > 0)
+//                .map(Inventory::getInventoryId).toList();
+
+//        inventoryRepository.getAvailableProductIds();
+
+//        return productRepository.findAll().stream().map(ProductDTO::new).map(ProductDTO::getBrand).toList();
+//        return  productRepository.findAll().stream().map(Product::getBrand).toList();
+//        List<Long> productIds = productRepository.findAll().stream().map(Product::getProductId).toList();
+        return productRepository.getAvailableBrands();
     }
 
     public void addProduct(ProductDTO productDTO) {
