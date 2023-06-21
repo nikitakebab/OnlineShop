@@ -23,7 +23,9 @@ public class ProductController {
             @RequestParam(value = "brand", required = false) String brand,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "sortBy", required = false) String sortType,
-            @RequestParam(value = "sortOrder", required = false) String sortOrder
+            @RequestParam(value = "sortOrder", required = false) String sortOrder,
+            @RequestParam(value = "page", required = true) int pageNum,
+            @RequestParam(value = "page_size", required = true) int pageSize
     ) {
         List<ProductDTO> products = productService.getProducts(
                 productId,
@@ -32,7 +34,9 @@ public class ProductController {
                 brand,
                 category,
                 sortType,
-                sortOrder
+                sortOrder,
+                pageNum,
+                pageSize
         );
 
         return new ResponseEntity<List<ProductDTO>>(products, HttpStatus.OK);

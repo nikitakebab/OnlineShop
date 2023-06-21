@@ -7,6 +7,8 @@ import org.example.model.Product;
 import org.example.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -22,7 +24,9 @@ public class ProductService {
             String brand,
             String category,
             String sortType,
-            String sortOrder
+            String sortOrder,
+            int pageNum,
+            int pageSize
     ) {
         if (sortType != null) return productRepository.findAll(Example.of(new Product(
                 productId,
@@ -30,7 +34,7 @@ public class ProductService {
                 description,
                 brand,
                 category
-        )), Sort.by(Sort.Direction.fromString(sortOrder), sortType)).stream().map(ProductDTO::new).toList();
+        )), PageRequest.of(pageNum, pageSize, Sort.by(Sort.Direction.fromString(sortOrder), sortType))).stream().map(ProductDTO::new).toList();
         else {
             return productRepository.findAll(Example.of(new Product(
                     productId,
@@ -38,7 +42,7 @@ public class ProductService {
                     description,
                     brand,
                     category
-            ))).stream().map(ProductDTO::new).toList();
+            )), PageRequest.of(pageNum, pageSize)).stream().map(ProductDTO::new).toList();
         }
     }
 
