@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
 import java.util.List;
 @Service
 public class ProductService {
@@ -66,7 +68,7 @@ public class ProductService {
         return new ProductDTO(productRepository.getById(id));
     }
 
-    public List<String> getBrands() {
+    public HashSet<String> getBrands() {
 //        List<Long> availableProductIds = inventoryRepository.findAll().stream()
 //                .filter(inventory -> inventory.getQuantity() > 0)
 //                .map(Inventory::getInventoryId).toList();
@@ -76,7 +78,7 @@ public class ProductService {
 //        return productRepository.findAll().stream().map(ProductDTO::new).map(ProductDTO::getBrand).toList();
 //        return  productRepository.findAll().stream().map(Product::getBrand).toList();
 //        List<Long> productIds = productRepository.findAll().stream().map(Product::getProductId).toList();
-        return productRepository.getAvailableBrands();
+        return new HashSet<>(productRepository.getAvailableBrands());
     }
 
     public void addProduct(ProductDTO productDTO) {

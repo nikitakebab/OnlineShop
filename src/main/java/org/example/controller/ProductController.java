@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @RestController
@@ -45,8 +46,8 @@ public class ProductController {
     }
 
     @GetMapping("/products/brands")
-    ResponseEntity<List<String>> getBrands() {
-        List<String> brands = productService.getBrands();
+    ResponseEntity<HashSet<String>> getBrands() {
+        HashSet<String> brands = productService.getBrands();
         return  new ResponseEntity<>(brands, HttpStatus.OK);
     }
 
