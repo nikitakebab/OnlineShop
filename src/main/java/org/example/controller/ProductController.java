@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.DAO.ProductDAO;
 import org.example.DTO.ProductDTO;
 import org.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import java.util.List;
 public class ProductController {
     @Autowired
     ProductService productService;
+    @Autowired
+    ProductDAO productDAO;
 
     @GetMapping("/products")
 //    @CrossOrigin
@@ -22,18 +25,18 @@ public class ProductController {
             @RequestParam(value = "product_id", required = false) Long productId,
             @RequestParam(value = "product_name", required = false) String productName,
             @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "brand", required = false) String brand,
+            @RequestParam(value = "brand", required = false) List<String> brands,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "sortBy", required = false) String sortType,
             @RequestParam(value = "sortOrder", required = false) String sortOrder,
             @RequestParam(value = "page", required = true) int pageNum,
             @RequestParam(value = "page_size", required = true) int pageSize
     ) {
-        Page<ProductDTO> products = productService.getProducts(
+        Page<ProductDTO> products = productDAO.getProducts(
                 productId,
                 productName,
                 description,
-                brand,
+                brands,
                 category,
                 sortType,
                 sortOrder,
