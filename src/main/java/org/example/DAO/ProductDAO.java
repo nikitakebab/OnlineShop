@@ -1,0 +1,99 @@
+package org.example.DAO;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.*;
+import lombok.RequiredArgsConstructor;
+import org.example.DTO.ProductDTO;
+import org.example.model.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Repository
+@RequiredArgsConstructor
+public class ProductDAO {
+
+    private final EntityManager em;
+
+    public Page<ProductDTO> getProducts(
+            Long productId,
+            String productName,
+            String description,
+            List<String> brands,
+            String category,
+            String sortType,
+            String sortOrder,
+            int pageNum,
+            int pageSize
+    ) {
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+
+        Root<Product> root = criteriaQuery.from(Product.class);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if (productId != null) {
+            Predicate productIdPredicate = criteriaBuilder
+                    .like(root.get("product_id"), "%" + productId + "%");
+            predicates.add(productIdPredicate);
+        }
+
+        if (productName != null) {
+            Predicate productNamePredicate = criteriaBuilder
+                    .like(root.get("product_name"), "%" + productName + "%");
+            predicates.add(productNamePredicate);
+        }
+
+        if(description != null) {
+            Predicate descriptionPredicate = criteriaBuilder
+                    .like(root.get("description"), "%" + description + "%");
+            predicates.add(descriptionPredicate);
+        }
+
+        if(brands != null) {
+//            Predicate brandPredicate = criteriaBuilder
+//                    .like(root.get("brand"), "%" + brand + "%");
+
+            Expression<String> exp = root.get("brand");
+            Predicate brandPredicate = exp.in(brands);
+            predicates.add(brandPredicate);
+        }
+
+        if(category != null) {
+            Predicate categoryPredicate = criteriaBuilder
+                    .like(root.get("category"), "%" + category + "%");
+            predicates.add(categoryPredicate);
+        }
+
+        criteriaQuery.where(criteriaBuilder.and(predicates.toArray(Predicate[]::new)));
+
+        if(sortType != null && sortOrder != null) {
+            if(sortOrder.equals("desc")) {
+                criteriaQuery.orderBy(criteriaBuilder.desc(root.get(sortType)));
+            }
+            else if (sortOrder.equals("asc")){
+                criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortType)));
+            }
+        }
+        TypedQuery<Product> query = em.createQuery(criteriaQuery);
+
+        int allProdSize = query.getResultList().size();
+        Pageable pageable = PageRequest.of(pageNum, pageSize);
+
+        query.setFirstResult((pageNum) * pageSize);
+        query.setMaxResults(pageSize);
+        List<Product> products = query.getResultList();
+
+//        return products.stream().map(ProductDTO::new).toList();
+        List<ProductDTO> productDTOList = products.stream().map(ProductDTO::new).toList();
+        return new PageImpl<>(productDTOList, pageable, allProdSize);
+    }
+}
