@@ -11,7 +11,7 @@ public class InventoryDTO {
     private Long inventoryId;
     private Long productId;
     private Integer quantity;
-    private Integer size;
+    private Double size;
 
     public InventoryDTO(@NonNull Inventory inventory) {
         this.inventoryId = inventory.getInventoryId();

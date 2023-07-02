@@ -23,7 +23,7 @@ public class Product {
     private Long productId;
     @Column(name = "product_name")
     private String productName;
-    @Column(name = "description", columnDefinition = "NVARCHAR(1000)")
+    @Column(name = "description", columnDefinition = "VARCHAR(1000)")
     private String description;
     @Column(name = "price")
     private Double price;

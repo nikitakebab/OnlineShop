@@ -20,14 +20,14 @@ public class InventoryDAO {
 
     private final EntityManager em;
 
-    public List<Long> getProductIdsBySize(List<Integer> sizes) {
+    public List<Long> getProductIdsBySize(List<Double> sizes) {
 
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Inventory> criteriaQuery = criteriaBuilder.createQuery(Inventory.class);
 
         Root<Inventory> root = criteriaQuery.from(Inventory.class);
 
-        Expression<Integer> exp = root.get("size");
+        Expression<Double> exp = root.get("size");
         Predicate predicate = exp.in(sizes);
 
         criteriaQuery.where(criteriaBuilder.and(Collections.singletonList(predicate).toArray(Predicate[]::new)));

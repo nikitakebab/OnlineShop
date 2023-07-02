@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     @Transactional
-    public List<Inventory> findInventoriesBySize(Integer size);
+    public List<Inventory> findInventoriesBySize(Double size);
 
 //    @Transactional
 //    public List<Long> findProductIdBySize(Integer size);

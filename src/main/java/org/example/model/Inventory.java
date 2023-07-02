@@ -24,7 +24,7 @@ public class Inventory {
     @Column(name = "quantity")
     private Integer quantity;
     @Column(name = "size")
-    private Integer size;
+    private Double size;
 
     public Inventory(@NonNull InventoryDTO inventoryDTO, @NonNull Product product){
         this.inventoryId = inventoryDTO.getInventoryId();

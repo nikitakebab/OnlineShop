@@ -26,7 +26,7 @@ public class ProductController {
             @RequestParam(value = "product_name", required = false) String productName,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "brand", required = false) List<String> brands,
-            @RequestParam(value = "size", required = false) List<Integer> sizes,
+            @RequestParam(value = "size", required = false) List<Double> sizes,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "sortBy", required = false) String sortType,
             @RequestParam(value = "sortOrder", required = false) String sortOrder,
@@ -54,6 +54,14 @@ public class ProductController {
     ResponseEntity<HashSet<String>> getBrands() {
         HashSet<String> brands = productService.getBrands();
         return  new ResponseEntity<>(brands, HttpStatus.OK);
+    }
+
+    @GetMapping("/products/sizes")
+    ResponseEntity<HashSet<Double>> getSizes(
+            @RequestParam(value = "brands") List<String> brands
+    ) {
+        HashSet<Double> sizes = productDAO.getSizes(brands);
+        return  new ResponseEntity<>(sizes, HttpStatus.OK);
     }
 
     @GetMapping("/products/{id}")

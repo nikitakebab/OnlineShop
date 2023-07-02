@@ -3,8 +3,10 @@ package org.example.DAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.example.DTO.ProductDTO;
+import org.example.model.Inventory;
 import org.example.model.Product;
 import org.example.repository.InventoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -33,7 +36,7 @@ public class ProductDAO {
             String productName,
             String description,
             List<String> brands,
-            List<Integer> sizes,
+            List<Double> sizes,
             String category,
             String sortType,
             String sortOrder,
@@ -105,5 +108,41 @@ public class ProductDAO {
 //        return products.stream().map(ProductDTO::new).toList();
         List<ProductDTO> productDTOList = products.stream().map(ProductDTO::new).toList();
         return new PageImpl<>(productDTOList, pageable, allProdSize);
+    }
+
+
+
+    public HashSet<Double> getSizes(List<String> brands) {
+
+        CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
+        CriteriaQuery<Product> criteriaQuery = criteriaBuilder.createQuery(Product.class);
+        Root<Product> root = criteriaQuery.from(Product.class);
+        List<Predicate> predicates = new ArrayList<>();
+
+        if(brands != null) {
+            Expression<String> exp = root.get("brand");
+            Predicate brandPredicate = exp.in(brands);
+            predicates.add(brandPredicate);
+        }
+        criteriaQuery.where(criteriaBuilder.and(predicates.toArray(Predicate[]::new)));
+        TypedQuery<Product> query = em.createQuery(criteriaQuery);
+        List<Long> productIds = query.getResultList().stream().map(Product::getProductId).toList();
+
+
+
+
+        CriteriaBuilder criteriaBuilder2 = em.getCriteriaBuilder();
+        CriteriaQuery<Inventory> criteriaQuery2 = criteriaBuilder2.createQuery(Inventory.class);
+        Root<Inventory> root2 = criteriaQuery2.from(Inventory.class);
+        List<Predicate> predicates2 = new ArrayList<>();
+
+        Expression<Long> exp = root.get("product_id");
+        Predicate sizePredicate = exp.in(productIds);
+        predicates2.add(sizePredicate);
+
+        criteriaQuery2.where(criteriaBuilder2.and(predicates2.toArray(Predicate[]::new)));
+        TypedQuery<Inventory> query2 = em.createQuery(criteriaQuery2);
+        List<Double> sizes = query2.getResultList().stream().map(Inventory::getSize).toList();
+        return new HashSet<>(sizes);
     }
 }
