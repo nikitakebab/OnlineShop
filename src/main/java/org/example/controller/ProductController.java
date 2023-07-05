@@ -2,6 +2,8 @@ package org.example.controller;
 
 import org.example.DAO.ProductDAO;
 import org.example.DTO.ProductDTO;
+import org.example.repository.InventoryRepository;
+import org.example.service.InventoryService;
 import org.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +20,9 @@ public class ProductController {
     ProductService productService;
     @Autowired
     ProductDAO productDAO;
+
+    @Autowired
+    InventoryService inventoryService;
 
     @GetMapping("/products")
 //    @CrossOrigin
@@ -60,7 +65,8 @@ public class ProductController {
     ResponseEntity<HashSet<Double>> getSizes(
             @RequestParam(value = "brands", required = false) List<String> brands
     ) {
-        HashSet<Double> sizes = productDAO.getSizes(brands);
+//        HashSet<Double> sizes = productDAO.getSizes(brands);
+        HashSet<Double> sizes = inventoryService.getSizesByBrands(brands);
         return  new ResponseEntity<>(sizes, HttpStatus.OK);
     }
 
