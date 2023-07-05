@@ -58,7 +58,7 @@ public class ProductController {
 
     @GetMapping("/products/sizes")
     ResponseEntity<HashSet<Double>> getSizes(
-            @RequestParam(value = "brands") List<String> brands
+            @RequestParam(value = "brands", required = false) List<String> brands
     ) {
         HashSet<Double> sizes = productDAO.getSizes(brands);
         return  new ResponseEntity<>(sizes, HttpStatus.OK);

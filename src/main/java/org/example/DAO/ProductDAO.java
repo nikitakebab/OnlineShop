@@ -136,7 +136,7 @@ public class ProductDAO {
         Root<Inventory> root2 = criteriaQuery2.from(Inventory.class);
         List<Predicate> predicates2 = new ArrayList<>();
 
-        Expression<Long> exp = root.get("product_id");
+        Expression<Long> exp = root2.get("product_id");
         Predicate sizePredicate = exp.in(productIds);
         predicates2.add(sizePredicate);
 
