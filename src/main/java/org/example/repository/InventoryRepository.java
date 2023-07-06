@@ -21,6 +21,9 @@ public interface InventoryRepository extends JpaRepository<Inventory, Long> {
     @Query(value = "SELECT size FROM Inventory WHERE Inventory.quantity > 0", nativeQuery = true)
     List<Double> getAllSizes();
 
+    @Query(value = "SELECT size FROM Inventory WHERE Inventory.quantity > 0 AND Inventory.product_id = :id", nativeQuery = true)
+    List<Double> getSizesByProductId(@Param("id") Long id);
+
 //    @Transactional
 //    public List<Long> findProductIdBySize(Integer size);
 }

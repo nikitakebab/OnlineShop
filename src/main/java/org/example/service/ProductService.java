@@ -19,6 +19,9 @@ public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
+    @Autowired
+    InventoryRepository inventoryRepository;
+
     public Page<ProductDTO> getProducts(
             Long productId,
             String productName,
@@ -66,6 +69,10 @@ public class ProductService {
 
     public ProductDTO getProduct(Long id) {
         return new ProductDTO(productRepository.getById(id));
+    }
+
+    public HashSet<Double> getProductSizes(Long id) {
+        return new HashSet<>(inventoryRepository.getSizesByProductId(id));
     }
 
     public HashSet<String> getBrands() {

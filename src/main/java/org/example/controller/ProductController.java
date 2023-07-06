@@ -76,6 +76,12 @@ public class ProductController {
         return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
     }
 
+    @GetMapping("/products/{id}/sizes")
+    @ResponseBody
+    ResponseEntity<HashSet<Double>> getProductSizes(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.getProductSizes(id), HttpStatus.OK);
+    }
+
     @PostMapping("/product")
     void addProduct(@RequestBody ProductDTO productDTO){
         productService.addProduct(productDTO);
