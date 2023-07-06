@@ -1,5 +1,5 @@
 # Description
-This project is a backend for an online shoe store. It is written on the Spring framework and currently uses the H2 database. I plan to replace it with MySQL in the future.
+This project is a backend for an online shoe store. It is written on the Spring framework and currently using PostgreSQL database.
 # Necessary software to launch the project
 To run the project, you will need maven and java 20 installed
 # Starting project via Maven

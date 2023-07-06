@@ -11,6 +11,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -26,6 +27,11 @@ public class InventoryService {
                 inventoryId,
                 productRepository.findById(productId).get()
         ))).stream().map(InventoryDTO::new).toList();
+    }
+
+    public HashSet<Double> getSizesByBrands(List<String> brands) {
+        if(brands!= null) return new HashSet<>(inventoryRepository.getSizesByBrands(brands));
+        else return new HashSet<>(inventoryRepository.getAllSizes());
     }
 
     public void addInventory(InventoryDTO inventoryDTO) {

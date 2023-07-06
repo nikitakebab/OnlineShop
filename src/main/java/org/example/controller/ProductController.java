@@ -2,6 +2,8 @@ package org.example.controller;
 
 import org.example.DAO.ProductDAO;
 import org.example.DTO.ProductDTO;
+import org.example.repository.InventoryRepository;
+import org.example.service.InventoryService;
 import org.example.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,6 +21,9 @@ public class ProductController {
     @Autowired
     ProductDAO productDAO;
 
+    @Autowired
+    InventoryService inventoryService;
+
     @GetMapping("/products")
 //    @CrossOrigin
     ResponseEntity<Page<ProductDTO>> getProducts(
@@ -26,6 +31,7 @@ public class ProductController {
             @RequestParam(value = "product_name", required = false) String productName,
             @RequestParam(value = "description", required = false) String description,
             @RequestParam(value = "brand", required = false) List<String> brands,
+            @RequestParam(value = "size", required = false) List<Double> sizes,
             @RequestParam(value = "category", required = false) String category,
             @RequestParam(value = "sortBy", required = false) String sortType,
             @RequestParam(value = "sortOrder", required = false) String sortOrder,
@@ -37,6 +43,7 @@ public class ProductController {
                 productName,
                 description,
                 brands,
+                sizes,
                 category,
                 sortType,
                 sortOrder,
@@ -54,10 +61,25 @@ public class ProductController {
         return  new ResponseEntity<>(brands, HttpStatus.OK);
     }
 
+    @GetMapping("/products/sizes")
+    ResponseEntity<HashSet<Double>> getSizes(
+            @RequestParam(value = "brands", required = false) List<String> brands
+    ) {
+//        HashSet<Double> sizes = productDAO.getSizes(brands);
+        HashSet<Double> sizes = inventoryService.getSizesByBrands(brands);
+        return  new ResponseEntity<>(sizes, HttpStatus.OK);
+    }
+
     @GetMapping("/products/{id}")
     @ResponseBody
     ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
         return new ResponseEntity<>(productService.getProduct(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/products/{id}/sizes")
+    @ResponseBody
+    ResponseEntity<HashSet<Double>> getProductSizes(@PathVariable Long id) {
+        return new ResponseEntity<>(productService.getProductSizes(id), HttpStatus.OK);
     }
 
     @PostMapping("/product")

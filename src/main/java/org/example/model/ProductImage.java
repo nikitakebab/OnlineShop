@@ -20,7 +20,7 @@ public class ProductImage {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
-    @Column(columnDefinition = "NVARCHAR(MAX)")
+    @Lob
     private String picture;
 
     public ProductImage(@NonNull ProductImageDTO productImageDTO, @NonNull Product product){

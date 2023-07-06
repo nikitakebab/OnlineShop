@@ -1,0 +1,17 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:14
+    environment:
+      POSTGRES_DB: "onlineshop"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
+    ports:
+      - "5433:5432"
+  app:
+    image: onlineshop:latest
+    ports:
+      - "8080:8080"
+networks:
+  default:
+    driver: bridge

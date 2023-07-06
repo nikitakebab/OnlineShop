@@ -21,7 +21,7 @@ public class ProductImageService {
     public List<ProductImageDTO> getProductImages(Long productImageId, Long productId) {
         return productImageRepository.findAll(Example.of(new ProductImage(
                 productImageId,
-                productRepository.findById(productId).get()
+                productRepository.findById(productId).orElse(null)
         ))).stream().map(ProductImageDTO::new).toList();
     }
 

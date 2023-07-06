@@ -3,9 +3,13 @@ package org.example.DAO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.example.DTO.ProductDTO;
+import org.example.model.Inventory;
 import org.example.model.Product;
+import org.example.repository.InventoryRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +18,7 @@ import org.springframework.stereotype.Repository;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Repository
@@ -21,12 +26,17 @@ import java.util.List;
 public class ProductDAO {
 
     private final EntityManager em;
+    @Autowired
+    InventoryDAO inventoryDAO;
+    @Autowired
+    InventoryRepository inventoryRepository;
 
     public Page<ProductDTO> getProducts(
             Long productId,
             String productName,
             String description,
             List<String> brands,
+            List<Double> sizes,
             String category,
             String sortType,
             String sortOrder,
@@ -41,24 +51,21 @@ public class ProductDAO {
         List<Predicate> predicates = new ArrayList<>();
 
         if (productId != null) {
-            Predicate productIdPredicate = criteriaBuilder
-                    .like(root.get("product_id"), "%" + productId + "%");
+            Predicate productIdPredicate = criteriaBuilder.equal(root.get("id"), productId);
             predicates.add(productIdPredicate);
         }
 
         if (productName != null) {
-            Predicate productNamePredicate = criteriaBuilder
-                    .like(root.get("product_name"), "%" + productName + "%");
+            Predicate productNamePredicate = criteriaBuilder.like(root.get("product_name"), "%" + productName + "%");
             predicates.add(productNamePredicate);
         }
 
-        if(description != null) {
-            Predicate descriptionPredicate = criteriaBuilder
-                    .like(root.get("description"), "%" + description + "%");
+        if (description != null) {
+            Predicate descriptionPredicate = criteriaBuilder.like(root.get("description"), "%" + description + "%");
             predicates.add(descriptionPredicate);
         }
 
-        if(brands != null) {
+        if (brands != null) {
 //            Predicate brandPredicate = criteriaBuilder
 //                    .like(root.get("brand"), "%" + brand + "%");
 
@@ -67,19 +74,25 @@ public class ProductDAO {
             predicates.add(brandPredicate);
         }
 
-        if(category != null) {
-            Predicate categoryPredicate = criteriaBuilder
-                    .like(root.get("category"), "%" + category + "%");
+        if (category != null) {
+            Predicate categoryPredicate = criteriaBuilder.like(root.get("category"), "%" + category + "%");
             predicates.add(categoryPredicate);
+        }
+
+        if (sizes != null) {
+            Expression<Long> expSize = root.get("id");
+//            Predicate sizePredicate = expSize.in(inventoryDAO.getProductIdsBySize(sizes));
+            Predicate sizePredicate = expSize.in(sizes.stream().map(inventoryRepository::findInventoriesBySize).map(inventories -> inventories.stream().map(inventory -> inventory.getProduct().getProductId()).toList()).toList());
+//            Predicate sizePredicate = expSize.in(sizes.stream().map(inventoryRepository::findProductIdBySize).toList());
+            predicates.add(sizePredicate);
         }
 
         criteriaQuery.where(criteriaBuilder.and(predicates.toArray(Predicate[]::new)));
 
-        if(sortType != null && sortOrder != null) {
-            if(sortOrder.equals("desc")) {
+        if (sortType != null && sortOrder != null) {
+            if (sortOrder.equals("desc")) {
                 criteriaQuery.orderBy(criteriaBuilder.desc(root.get(sortType)));
-            }
-            else if (sortOrder.equals("asc")){
+            } else if (sortOrder.equals("asc")) {
                 criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortType)));
             }
         }
@@ -96,4 +109,5 @@ public class ProductDAO {
         List<ProductDTO> productDTOList = products.stream().map(ProductDTO::new).toList();
         return new PageImpl<>(productDTOList, pageable, allProdSize);
     }
+
 }
